@@ -1,0 +1,11 @@
+Read in file                            DONE
+Create Class for Cell                   DONE
+Apply Light Priorities
+
+
+For Preprocessing:
+    - 0s                                DONE
+    - 1s
+    - 2s
+    - 3s
+    - 4s                                NEXT

@@ -17,25 +17,26 @@ def lookForZero(processedPuzzleBoard): #Searches the board for any cells contain
     return processedPuzzleBoard
 
 def setZero(puzzleBoard, x , y): #Sets surrounding cells as unlightable
+    processedPuzzleBoard = puzzleBoard
     if (x <= 0): #If the 0 is on the left of the board
-        puzzleBoard[y][x+1].lightable = False
-        puzzleBoard[y+1][x].lightable = False
-        puzzleBoard[y-1][x].lightable = False
-    elif (x >= len(puzzleBoard[y])): #If the 0 is on the right of the board
-        puzzleBoard[y][x-1].lightable = False
-        puzzleBoard[y+1][x].lightable = False
-        puzzleBoard[y-1][x].lightable = False
+        processedPuzzleBoard[y][x+1].lightable = False
+        processedPuzzleBoard[y+1][x].lightable = False
+        processedPuzzleBoard[y-1][x].lightable = False
+    elif (x >= len(processedPuzzleBoard[y])): #If the 0 is on the right of the board
+        processedPuzzleBoard[y][x-1].lightable = False
+        processedPuzzleBoard[y+1][x].lightable = False
+        processedPuzzleBoard[y-1][x].lightable = False
     elif (y <= 0): #If the 0 is on the top of the board
-        puzzleBoard[y][x+1].lightable = False
-        puzzleBoard[y][x-1].lightable = False
-        puzzleBoard[y+1][x].lightable = False
-    elif (y >= len(puzzleBoard)): #If the 0 is on the bottom of the board
-        puzzleBoard[y][x+1].lightable = False
-        puzzleBoard[y][x-1].lightable = False
-        puzzleBoard[y-1][x].lightable = False
-    else:
-        puzzleBoard[y][x+1].lightable = False
-        puzzleBoard[y][x-1].lightable = False
-        puzzleBoard[y+1][x].lightable = False
-        puzzleBoard[y-1][x].lightable = False
-    return puzzleBoard
+        processedPuzzleBoard[y][x+1].lightable = False
+        processedPuzzleBoard[y][x-1].lightable = False
+        processedPuzzleBoard[y+1][x].lightable = False
+    elif (y >= len(processedPuzzleBoard)): #If the 0 is on the bottom of the board
+        processedPuzzleBoard[y][x+1].lightable = False
+        processedPuzzleBoard[y][x-1].lightable = False
+        processedPuzzleBoard[y-1][x].lightable = False
+    else: #Set all adjacent tiles to unlightable
+        processedPuzzleBoard[y][x+1].lightable = False
+        processedPuzzleBoard[y][x-1].lightable = False
+        processedPuzzleBoard[y+1][x].lightable = False
+        processedPuzzleBoard[y-1][x].lightable = False
+    return processedPuzzleBoard
