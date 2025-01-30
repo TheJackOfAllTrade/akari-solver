@@ -9,3 +9,7 @@ For Preprocessing:
     - 2s
     - 3s
     - 4s                                NEXT
+
+    For 4s
+        - Set adjacent spots to Lightbulb light column and row to lit
+        - DUMB ERROR: Somehow reaching OutOfIndex Error in setFour()
