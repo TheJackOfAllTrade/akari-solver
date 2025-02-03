@@ -56,73 +56,35 @@ def setFour(puzzleBoard, x, y):
     processedPuzzleBoard = puzzleBoard
     
     #Places a lightbulb at each adjacent cell then calls the placeBulb function to light all relevant cells
-    try:
-        processedPuzzleBoard[y][x+1].cellType = "L"
-        processedPuzzleBoard = placeBulb(processedPuzzleBoard, x+1, y, "right")
+    #try:
+    catchx = x+1
+    catchy = y
+    catchdirection = "right"
+    processedPuzzleBoard[y][x+1].cellType = "L"
+    processedPuzzleBoard = processedPuzzleBoard[y][x+1].placeBulb(processedPuzzleBoard, x+1, y)
 
-        processedPuzzleBoard[y][x-1].cellType = "L"
-        processedPuzzleBoard = placeBulb(processedPuzzleBoard, x-1, y, "left")
+    catchx = x-1
+    catchy = y
+    catchdirection = "left"
+    processedPuzzleBoard[y][x-1].cellType = "L"
+    #processedPuzzleBoard = processedPuzzleBoard[y][x-1].placeBulb(processedPuzzleBoard, x-1, y)
 
-        processedPuzzleBoard[y+1][x].cellType = "L"
-        processedPuzzleBoard = placeBulb(processedPuzzleBoard, x, y+1, "down")
-        
-        processedPuzzleBoard[y-1][x].cellType = "L"
-        processedPuzzleBoard = placeBulb(processedPuzzleBoard, x, y-1, "left")
-
-    except IndexError:
-        print(str(x) + " " + str(y))
-        print("Tried to place a lightbulb outside the gameboard like an idiot")
+    catchx = x
+    catchy = y+1
+    catchdirection = "down"
+    processedPuzzleBoard[y+1][x].cellType = "L"
+    #processedPuzzleBoard = processedPuzzleBoard[y+1][x].placeBulb(processedPuzzleBoard, x, y+1)
     
+    catchx = x
+    catchy = y-1
+    catchdirection = "up"
+    processedPuzzleBoard[y-1][x].cellType = "L"
+    #processedPuzzleBoard = processedPuzzleBoard[y-1][x].placeBulb(processedPuzzleBoard, x, y-1)
+    
+    #except IndexError:
+        #print("Tried to place a lightbulb outside the gameboard like an idiot at " + str(catchx) + " " + str(catchy) + " in the " + catchdirection + " direction")
+    
+    #finally:
     return processedPuzzleBoard
-
-def placeBulb(puzzleBoard, x, y, direction):
-    stopped = False
-    print("Place Bulb called")
-    while not stopped:
-        print("Started Looping")
-        if direction == "right": #Keeps going right until hits either the edge of the board or another type of cell (e.g another number or blocked cell)
-            x += 1
-            if x <= len(puzzleBoard[y]):
-                print("Not out of bounds")
-                if puzzleBoard[y][x].cellType == "-":
-                    print("Changing cell (" + str(x) + "," + str(y) + ") to lit")
-                    puzzleBoard[y][x].lit = True
-                else:
-                    stopped = True
-            else:
-                stopped = True
-        elif direction == "left": #Keeps going left until hits either the edge of the board or another type of cell (e.g another number or blocked cell)
-            x -= 1
-            if x >= 0:
-                if puzzleBoard[y][x].cellType == "-":
-                    print("Changing cell (" + str(x) + "," + str(y) + ") to lit")
-                    puzzleBoard[y][x].lit = True
-                else:
-                    stopped = True
-            else:
-                stopped = True
-        elif direction == "up": #Keeps going up until hits either the edge of the board or another type of cell (e.g another number or blocked cell)
-            y -= 1
-            if y >= 0:
-                if puzzleBoard[y][x].cellType == "-":
-                    print("Changing cell (" + str(x) + "," + str(y) + ") to lit")
-                    puzzleBoard[y][x].lit = True
-                else:
-                    stopped = True
-            else:
-                stopped = True
-        elif direction == "down": #Keeps going down until hits either the edge of the board or another type of cell (e.g another number or blocked cell)
-            y += 1
-            if y <= len(puzzleBoard):
-                if puzzleBoard[y][x].cellType == "-":
-                    print("Changing cell (" + str(x) + "," + str(y) + ") to lit")
-                    puzzleBoard[y][x].lit = True
-                else:
-                    stopped = True
-            else:
-                stopped = True
-        else:
-            print("Something has gone horribly wrong in the set light function")
-        return puzzleBoard
 
 
