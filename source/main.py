@@ -7,29 +7,49 @@ class Cell: #Each cell in the puzzle board and its attributes
         self.lit = lit #This is whether a cell is lit by a lightbulb or not
         self.lightable = lightable #Don't be fooled, "Lightable" in this case means a cell can't have a lightbulb. I'm just dumb and too lazy to change it
 
-    def placeBulb(self, board, xCoord, yCoord):
+    def placeBulb(self, board, x, y):
+
         directions = ["up","down","left","right"]
         for i in directions:
-            while (yCoord >= 0) or (yCoord <= len(board)) or (xCoord >= 0) or (xCoord <= len(board[0])):
-                if i == "up":
-                    print(str(yCoord))
-                    board[yCoord][xCoord].lit = True
-                    yCoord -= 1
-                elif i == "down":
-                    board[y+1][x].lit = True
-                    y += 1
-                elif i == "left":
-                    board[y][x-1].lit = True
-                    x -= 1
-                elif i == "right":
-                    board[y][x+1].lit = True
-                    x += 1
+            stopped = False
+            yCoord = y
+            xCoord = x
+            while not stopped:
+                if board[yCoord][xCoord].cellType == "-" or board[yCoord][xCoord].cellType == "L": 
+                    if i == "up":
+                        board[yCoord][xCoord].lit = True
+                        if yCoord <= 0:
+                            stopped = True
+                        else:
+                            yCoord -= 1
+                    elif i == "down":
+                        print(str(yCoord))
+                        board[yCoord][xCoord].lit = True
+                        if yCoord >= (len(board) - 1):
+                            stopped = True
+                        else:
+                            yCoord += 1
+                    elif i == "left":
+                        board[yCoord][xCoord].lit = True
+                        if xCoord <= 0:
+                            stopped = True
+                        else:
+                            xCoord -= 1
+                    elif i == "right":
+                        board[yCoord][xCoord].lit = True
+                        if xCoord >= (len(board[0]) - 1):
+                            stopped = True
+                        else:    
+                            xCoord += 1
+                    else:
+                        print("OOOOOOO SCHOOOBIDY LOOBIDY!!")
                 else:
-                    print("OOOOOOO SCHOOOBIDY LOOBIDY!!")
+                    print("Met Cell type [" + board[yCoord][xCoord].cellType + "]. Moving on...")
+                    stopped = True
         return board
 
 def readFile(): #Reads the file and formats each cell into the Cell object, adding them to the puzzleBoard array
-    file = open("akari-solver/puzzles/7x7-6", "r")
+    file = open("puzzles/7x7-6", "r")
     content = file.readlines()
 
     for i in content[7:(len(content)-1)]:

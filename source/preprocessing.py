@@ -56,35 +56,35 @@ def setFour(puzzleBoard, x, y):
     processedPuzzleBoard = puzzleBoard
     
     #Places a lightbulb at each adjacent cell then calls the placeBulb function to light all relevant cells
-    #try:
-    catchx = x+1
-    catchy = y
-    catchdirection = "right"
-    processedPuzzleBoard[y][x+1].cellType = "L"
-    processedPuzzleBoard = processedPuzzleBoard[y][x+1].placeBulb(processedPuzzleBoard, x+1, y)
+    try:
+        catchx = x+1
+        catchy = y
+        catchdirection = "right"
+        processedPuzzleBoard[y][x+1].cellType = "L"
+        processedPuzzleBoard = processedPuzzleBoard[y][x+1].placeBulb(processedPuzzleBoard, x+1, y)
 
-    catchx = x-1
-    catchy = y
-    catchdirection = "left"
-    processedPuzzleBoard[y][x-1].cellType = "L"
-    #processedPuzzleBoard = processedPuzzleBoard[y][x-1].placeBulb(processedPuzzleBoard, x-1, y)
+        catchx = x-1
+        catchy = y
+        catchdirection = "left"
+        processedPuzzleBoard[y][x-1].cellType = "L"
+        processedPuzzleBoard = processedPuzzleBoard[y][x-1].placeBulb(processedPuzzleBoard, x-1, y)
 
-    catchx = x
-    catchy = y+1
-    catchdirection = "down"
-    processedPuzzleBoard[y+1][x].cellType = "L"
-    #processedPuzzleBoard = processedPuzzleBoard[y+1][x].placeBulb(processedPuzzleBoard, x, y+1)
+        catchx = x
+        catchy = y+1
+        catchdirection = "down"
+        processedPuzzleBoard[y+1][x].cellType = "L"
+        processedPuzzleBoard = processedPuzzleBoard[y+1][x].placeBulb(processedPuzzleBoard, x, y+1)
+        
+        catchx = x
+        catchy = y-1
+        catchdirection = "up"
+        processedPuzzleBoard[y-1][x].cellType = "L"
+        processedPuzzleBoard = processedPuzzleBoard[y-1][x].placeBulb(processedPuzzleBoard, x, y-1)
     
-    catchx = x
-    catchy = y-1
-    catchdirection = "up"
-    processedPuzzleBoard[y-1][x].cellType = "L"
-    #processedPuzzleBoard = processedPuzzleBoard[y-1][x].placeBulb(processedPuzzleBoard, x, y-1)
+    except IndexError:
+        print("Tried to place a lightbulb outside the gameboard like an idiot at " + str(catchx) + " " + str(catchy) + " in the " + catchdirection + " direction")
     
-    #except IndexError:
-        #print("Tried to place a lightbulb outside the gameboard like an idiot at " + str(catchx) + " " + str(catchy) + " in the " + catchdirection + " direction")
-    
-    #finally:
-    return processedPuzzleBoard
+    finally:
+        return processedPuzzleBoard
 
 
