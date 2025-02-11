@@ -8,8 +8,24 @@ For Preprocessing:
     - 1s
     - 2s
     - 3s
-    - 4s                                NEXT
+    - 4s                                DONE
 
-    For 4s
-        - Set adjacent spots to Lightbulb light column and row to lit
-        - DUMB ERROR: Somehow reaching OutOfIndex Error in setFour()
+
+    For placeBulb()
+        - Check that cells are lightable
+
+    For 3s, 2s and 1s
+        - Check surrounding tiles
+        - If count of "-" cells (WHERE lightable == True) is EQUAL to number in cell. Fill cells with lightbulbs.
+        - ELSE move to next numbered cell
+        - Keep repeating until no changes are mades
+
+
+
+
+    IF 3
+    check surround cells
+    Conditions for valid cell:
+        - Empty ("-")
+        - Not lit (cell.lit == 0)
+        - Is Lightable (cell.lightable == 1)
