@@ -107,28 +107,28 @@ def countSurroundings(puzzleBoard, x, y):
         try:
             if i == "up":
                 cell = puzzleBoard[y-1][x]
-                if cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
+                if (y-1 >= 0) and cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
                     count += 1
                 else:
                     next
             elif i == "down":
                 cell = puzzleBoard[y+1][x]
-                if cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
+                if (y+1 <= len(puzzleBoard)) and cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
                     count += 1
                 else:
                     next
             elif i == "left":
                 cell = puzzleBoard[y][x-1]
-                if cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
+                if (x-1 >= 0) and cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
                     count += 1
                 else:
                     next
             elif i == "right":
                 cell = puzzleBoard[y][x+1]
-                if cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
+                if (x+1 <= len(puzzleBoard[0])) and cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
                     count += 1
                 else:
-                    continue
+                    next
         except IndexError:
                 next
     return count

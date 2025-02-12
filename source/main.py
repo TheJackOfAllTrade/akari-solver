@@ -123,14 +123,14 @@ def writeBoardStateToCSV(puzzleBoard, type):
         
 
 puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
-filename = "puzzles/20x20-1"
+filename = "puzzles/10x10-1"
 readFile(filename) #Initialises puzzleBoard
 print("Puzzle Initialised!")
 
 proPuzzleBoard = pp.preProcess(puzzleBoard) #Calls function in preprocessing.py
 print("Puzzle preprocessed")
 
-print("#####Cell#####")
+print("#####CELL#####")
 outputBoard(proPuzzleBoard, "cell")
 print("#####LIT#####")
 outputBoard(proPuzzleBoard, "lit")
@@ -141,6 +141,7 @@ outputBoard(proPuzzleBoard, "lightable")
 writeBoardStateToCSV(proPuzzleBoard, "cell")
 writeBoardStateToCSV(proPuzzleBoard, "lit")
 writeBoardStateToCSV(proPuzzleBoard, "lightable")
+
 
 
 
