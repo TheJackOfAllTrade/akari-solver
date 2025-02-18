@@ -29,7 +29,7 @@ class Cell: #Each cell in the puzzle board and its attributes
                             else:
                                 yCoord -= 1
                         elif i == "down":
-                            print(str(yCoord))
+                            #print(str(yCoord))
                             board[yCoord][xCoord].lit = 1
                             if yCoord >= (len(board) - 1):
                                 stopped = True
@@ -50,7 +50,7 @@ class Cell: #Each cell in the puzzle board and its attributes
                         else:
                             print("OOOOOOO SCHOOOBIDY LOOBIDY!!")
                     else:
-                        print("Met Cell type [" + board[yCoord][xCoord].cellType + "]. Moving on...")
+                        #print("Met Cell type [" + board[yCoord][xCoord].cellType + "]. Moving on...")
                         stopped = True
             return board
 
@@ -123,7 +123,7 @@ def writeBoardStateToCSV(puzzleBoard, type):
         
 
 puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
-filename = "puzzles/10x10-1"
+filename = "puzzles/7x7-8"
 readFile(filename) #Initialises puzzleBoard
 print("Puzzle Initialised!")
 

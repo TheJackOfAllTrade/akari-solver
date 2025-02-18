@@ -1,6 +1,5 @@
 
 
-
 def preProcess(puzzleBoard): #What is called in the main
     processedPuzzleBoard = puzzleBoard #Doesn't overwrite puzzleBoard just in case
     processedPuzzleBoard = lookForZero(processedPuzzleBoard)
@@ -88,19 +87,33 @@ def setFour(puzzleBoard, x, y):
         return processedPuzzleBoard
 
 def dealWithRest(puzzleBoard, x, y):
+    xMarker = []
+    yMarker = []
+
     if(puzzleBoard[y][x].cellType == "3"):
-        surroundings = countSurroundings(puzzleBoard, x, y)
+        xMarker, yMarker, surroundings = countSurroundings(puzzleBoard, xMarker, yMarker, x, y)
         print("There are " + str(surroundings) + " valid cells around (" + str(x) + "," + str(y) + ")")
     elif(puzzleBoard[y][x].cellType == "2"):
-        print("Hmm...Yes, this is a 2")
+        xMarker, yMarker, surroundings = countSurroundings(puzzleBoard, xMarker, yMarker, x, y)
+        print("There are " + str(surroundings) + " valid cells around (" + str(x) + "," + str(y) + ")")
     elif(puzzleBoard[y][x].cellType == "1"):
-        print("Hmm...Yes, this is a 1")
+        xMarker, yMarker, surroundings = countSurroundings(puzzleBoard, xMarker, yMarker, x, y)
+        print("There are " + str(surroundings) + " valid cells around (" + str(x) + "," + str(y) + ")")
     else:
         print("Hmm...I have no clue what this is.")
+
+    #print(str(surroundings) + "," + str(puzzleBoard[y][x].cellType) )
+
+    if str(surroundings) == puzzleBoard[y][x].cellType:
+        print("Calling PlaceBulb for (" + str(x) + "," + str(y) + ")")
+        for i in range(len(xMarker)):
+            puzzleBoard = puzzleBoard[xMarker[i]][yMarker[i]].placeBulb(puzzleBoard, xMarker[i], yMarker[i])
+    else:
+        print("(" + str(x) + "," + str(y) + ") not solvable yet. Moving on.")
     
     return puzzleBoard
 
-def countSurroundings(puzzleBoard, x, y):
+def countSurroundings(puzzleBoard, xMarker, yMarker, x, y):
     count = 0
     directions = ["up", "down", "left", "right"]
     for i in directions:
@@ -109,26 +122,34 @@ def countSurroundings(puzzleBoard, x, y):
                 cell = puzzleBoard[y-1][x]
                 if (y-1 >= 0) and cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
                     count += 1
+                    xMarker.append(x)
+                    yMarker.append(y-1)
                 else:
                     next
             elif i == "down":
                 cell = puzzleBoard[y+1][x]
                 if (y+1 <= len(puzzleBoard)) and cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
                     count += 1
+                    xMarker.append(x)
+                    yMarker.append(y+1)
                 else:
                     next
             elif i == "left":
                 cell = puzzleBoard[y][x-1]
                 if (x-1 >= 0) and cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
                     count += 1
+                    xMarker.append(x-1)
+                    yMarker.append(y)
                 else:
                     next
             elif i == "right":
                 cell = puzzleBoard[y][x+1]
                 if (x+1 <= len(puzzleBoard[0])) and cell.cellType == "-" and cell.lit == 0 and cell.lightable == 1:
                     count += 1
+                    xMarker.append(x+1)
+                    yMarker.append(y)
                 else:
                     next
         except IndexError:
                 next
-    return count
+    return xMarker, yMarker, count
