@@ -1,11 +1,13 @@
 import preprocessing as pp
+import set_priority as sp
 
 
 class Cell: #Each cell in the puzzle board and its attributes
-    def __init__(self, cellType, lit, lightable):
+    def __init__(self, cellType, lit, lightable, priority):
         self.cellType = cellType
         self.lit = lit #This is whether a cell is lit by a lightbulb or not
         self.lightable = lightable #Don't be fooled, "Lightable" in this case means a cell can't have a lightbulb. I'm just dumb and too lazy to change it
+        self.priority = priority
 
     def placeBulb(self, board, x, y):
         directions = ["up","down","left","right"]
@@ -64,10 +66,10 @@ def readFile(filename): #Reads the file and formats each cell into the Cell obje
             if x == " " or repr(x) == repr("\n"):
                 next
             elif x == "-":
-                newCell = Cell(x, 0, 1)
+                newCell = Cell(x, 0, 1, 0)
                 currentLine.append(newCell)
             else:
-                newCell = Cell(x, 0, 0)
+                newCell = Cell(x, 0, 0, 0)
                 currentLine.append(newCell)
         puzzleBoard.append(currentLine)
     file.close()
@@ -93,6 +95,12 @@ def outputBoard(puzzleBoard, type):
             for x in range(len(puzzleBoard[y])):
                 line.append(puzzleBoard[y][x].lightable)
             print(line)
+    elif type == "priority":
+        for y in range(len(puzzleBoard)):
+            line = []
+            for x in range(len(puzzleBoard[y])):
+                line.append(puzzleBoard[y][x].priority)
+            print(line)
     else:
         print("Not a valid output type")
 
@@ -117,6 +125,11 @@ def writeBoardStateToCSV(puzzleBoard, type):
             for x in range(len(puzzleBoard[0])):
                 csv.write(str(puzzleBoard[y][x].lightable) + ",")
             csv.write("\n")
+    elif type == "priority":
+        for y in range(len(puzzleBoard)):
+            for x in range(len(puzzleBoard[0])):
+                csv.write(str(puzzleBoard[y][x].priority) + ",")
+            csv.write("\n")
     else:
         print("Not a valid output type (csv method)")
 
@@ -130,17 +143,41 @@ print("Puzzle Initialised!")
 proPuzzleBoard = pp.preProcess(puzzleBoard) #Calls function in preprocessing.py
 print("Puzzle preprocessed")
 
+proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priority.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#~~~~~~~~~~~~~~Just outputs and stuff~~~~~~~~~~~~~~~~~
 print("#####CELL#####")
 outputBoard(proPuzzleBoard, "cell")
 print("#####LIT#####")
 outputBoard(proPuzzleBoard, "lit")
 print("#####LIGHTABLE#####")
 outputBoard(proPuzzleBoard, "lightable")
-
+print("#####PRIORITY#####")
+outputBoard(proPuzzleBoard, "priority")
 
 writeBoardStateToCSV(proPuzzleBoard, "cell")
 writeBoardStateToCSV(proPuzzleBoard, "lit")
 writeBoardStateToCSV(proPuzzleBoard, "lightable")
+writeBoardStateToCSV(proPuzzleBoard, "priority")
 
 
 

@@ -1,31 +1,17 @@
 Read in file                            DONE
 Create Class for Cell                   DONE
-Apply Light Priorities
+Preprocessing                           DONE
+Apply Light Priorities                  
 
 
 For Preprocessing:
     - 0s                                DONE
-    - 1s
-    - 2s
-    - 3s
+    - 1s                                DONE
+    - 2s                                DONE
+    - 3s                                DONE
     - 4s                                DONE
 
 
-    For placeBulb()
-        - Check that cells are lightable
-
-    For 3s, 2s and 1s
-        - Check surrounding tiles
-        - If count of "-" cells (WHERE lightable == True) is EQUAL to number in cell. Fill cells with lightbulbs.
-        - ELSE move to next numbered cell
-        - Keep repeating until no changes are mades
-
-
-
-
-    IF 3
-    check surround cells
-    Conditions for valid cell:
-        - Empty ("-")
-        - Not lit (cell.lit == 0)
-        - Is Lightable (cell.lightable == 1)
+ISSUE!!!!
+For the 3s, 2s and 1s
+It does not check if the cell is already satisfied (i.e. a one can easily be satisfied by a nearby 3/4 cell)
