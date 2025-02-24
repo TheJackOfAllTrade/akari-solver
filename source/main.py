@@ -134,16 +134,19 @@ def writeBoardStateToCSV(puzzleBoard, type):
         print("Not a valid output type (csv method)")
 
         
-
+print("\n############INITIALISING PUZZLE############")
 puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
-filename = "puzzles/7x7-8"
+filename = "puzzles/10x10-5"
 readFile(filename) #Initialises puzzleBoard
 print("Puzzle Initialised!")
 
+print("\n############PREPROCESSING PUZZLE############")
 proPuzzleBoard = pp.preProcess(puzzleBoard) #Calls function in preprocessing.py
 print("Puzzle preprocessed")
 
+print("\n############SETTING INITIAL PRIORITIES############")
 proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priority.py
+print("Priorities set")
 
 
 
@@ -165,6 +168,7 @@ proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priorit
 
 
 #~~~~~~~~~~~~~~Just outputs and stuff~~~~~~~~~~~~~~~~~
+print("\n \n \n")
 print("#####CELL#####")
 outputBoard(proPuzzleBoard, "cell")
 print("#####LIT#####")
@@ -173,6 +177,7 @@ print("#####LIGHTABLE#####")
 outputBoard(proPuzzleBoard, "lightable")
 print("#####PRIORITY#####")
 outputBoard(proPuzzleBoard, "priority")
+print("\n\n\n")
 
 writeBoardStateToCSV(proPuzzleBoard, "cell")
 writeBoardStateToCSV(proPuzzleBoard, "lit")

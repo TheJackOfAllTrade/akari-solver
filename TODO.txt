@@ -11,7 +11,3 @@ For Preprocessing:
     - 3s                                DONE
     - 4s                                DONE
 
-
-ISSUE!!!!
-For the 3s, 2s and 1s
-It does not check if the cell is already satisfied (i.e. a one can easily be satisfied by a nearby 3/4 cell)

@@ -89,6 +89,9 @@ def setFour(puzzleBoard, x, y):
 def dealWithRest(puzzleBoard, x, y):
     xMarker = []
     yMarker = []
+    surroundings = 0
+    satisfied = checkSatisfied(puzzleBoard, x, y)
+
 
     if(puzzleBoard[y][x].cellType == "3"):
         xMarker, yMarker, surroundings = countSurroundings(puzzleBoard, xMarker, yMarker, x, y)
@@ -104,13 +107,16 @@ def dealWithRest(puzzleBoard, x, y):
 
     #print(str(surroundings) + "," + str(puzzleBoard[y][x].cellType) )
 
-    if str(surroundings) == puzzleBoard[y][x].cellType:
-        print("Calling PlaceBulb for (" + str(x) + "," + str(y) + ")")
-        for i in range(len(xMarker)):
-            puzzleBoard = puzzleBoard[xMarker[i]][yMarker[i]].placeBulb(puzzleBoard, xMarker[i], yMarker[i])
+    if satisfied != int(puzzleBoard[y][x].cellType):
+        if str(surroundings) == puzzleBoard[y][x].cellType:
+            print("Calling PlaceBulb for (" + str(x) + "," + str(y) + ")")
+            for i in range(len(xMarker)):
+                puzzleBoard = puzzleBoard[xMarker[i]][yMarker[i]].placeBulb(puzzleBoard, xMarker[i], yMarker[i])
+        else:
+            print("(" + str(x) + "," + str(y) + ") not solvable yet. Moving on.")
     else:
-        print("(" + str(x) + "," + str(y) + ") not solvable yet. Moving on.")
-    
+        print("Cell already satisfied, moving on")
+
     return puzzleBoard
 
 def countSurroundings(puzzleBoard, xMarker, yMarker, x, y):
@@ -153,3 +159,39 @@ def countSurroundings(puzzleBoard, xMarker, yMarker, x, y):
         except IndexError:
                 next
     return xMarker, yMarker, count
+
+def checkSatisfied(puzzleBoard, x, y):
+    direction = ["up", "down", "left", "right"]
+    count = 0
+    for i in direction:
+        try:
+            if i == "up":
+                cell = puzzleBoard[y-1][x]
+                if cell.cellType == "L":
+                    count += 1
+                else:
+                    next
+            elif i == "down":
+                cell = puzzleBoard[y+1][x]
+                if cell.cellType == "L":
+                    count += 1
+                else:
+                    next
+            elif i == "left":
+                cell == puzzleBoard[y][x-1]
+                if cell.cellType == "L":
+                    count += 1
+                else:
+                    next
+            elif i == "right":
+                cell == puzzleBoard[y][x+1]
+                if cell.cellType == "L":
+                    count += 1
+                else:
+                    next
+            else:
+                print("Why the fuck are we here?")
+        except IndexError:
+            continue
+
+    return count
