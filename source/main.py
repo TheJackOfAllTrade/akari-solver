@@ -26,6 +26,7 @@ class Cell: #Each cell in the puzzle board and its attributes
                     if board[yCoord][xCoord].cellType == "-" or board[yCoord][xCoord].cellType == "L": 
                         if i == "up":
                             board[yCoord][xCoord].lit = 1
+                            board[yCoord][xCoord].lightable = 0
                             if yCoord <= 0:
                                 stopped = True
                             else:
@@ -33,18 +34,21 @@ class Cell: #Each cell in the puzzle board and its attributes
                         elif i == "down":
                             #print(str(yCoord))
                             board[yCoord][xCoord].lit = 1
+                            board[yCoord][xCoord].lightable = 0
                             if yCoord >= (len(board) - 1):
                                 stopped = True
                             else:
                                 yCoord += 1
                         elif i == "left":
                             board[yCoord][xCoord].lit = 1
+                            board[yCoord][xCoord].lightable = 0
                             if xCoord <= 0:
                                 stopped = True
                             else:
                                 xCoord -= 1
                         elif i == "right":
                             board[yCoord][xCoord].lit = 1
+                            board[yCoord][xCoord].lightable = 0
                             if xCoord >= (len(board[0]) - 1):
                                 stopped = True
                             else:    

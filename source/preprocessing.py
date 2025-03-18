@@ -27,28 +27,43 @@ def lookForFour(processedPuzzleBoard): #Searches the board for any cells contain
                 next
     return processedPuzzleBoard
 
-def lookForRest(processedPuzzleBoard):
-    for y in range(len(processedPuzzleBoard)):
-        for x in range(len(processedPuzzleBoard[y])):
-            if processedPuzzleBoard[y][x].cellType == "3" or processedPuzzleBoard[y][x].cellType == "2" or processedPuzzleBoard[y][x].cellType == "1":
-                print("Found " + processedPuzzleBoard[y][x].cellType + " at (" + str(x) + "," + str(y) + ")")
-                processedPuzzleBoard = dealWithRest(processedPuzzleBoard, x, y)
-            else:
-                next
+def lookForRest(processedPuzzleBoard): #Searches the board for the rest of the cells (3s, 2s and 1s)
+    changed = False
+    while changed: #Made lookForRest() loop until there isn't a change in the board. May not work as intended, quite hard to test. If there is a problem with incorrect solves, check that first.
+        changed = False
+        for y in range(len(processedPuzzleBoard)):
+            for x in range(len(processedPuzzleBoard[y])):
+                if processedPuzzleBoard[y][x].cellType == "3" or processedPuzzleBoard[y][x].cellType == "2" or processedPuzzleBoard[y][x].cellType == "1":
+                    print("Found " + processedPuzzleBoard[y][x].cellType + " at (" + str(x) + "," + str(y) + ")")
+                    processedPuzzleBoard, changed = dealWithRest(processedPuzzleBoard, x, y, changed)
+                else:
+                    next
+        
     return processedPuzzleBoard
 
 
 def setZero(puzzleBoard, x , y): #Sets surrounding cells as unlightable
     processedPuzzleBoard = puzzleBoard
-    try:
-        processedPuzzleBoard[y][x+1].lightable = 0
-        processedPuzzleBoard[y][x-1].lightable = 0
-        processedPuzzleBoard[y+1][x].lightable = 0
-        processedPuzzleBoard[y-1][x].lightable = 0
-    except IndexError:
-        print()
-    finally:
-        return processedPuzzleBoard
+    
+    direction = ["right", "left", "down", "up"]
+    for i in direction:
+        try:
+            if i == "right" and x+1 <= (len(puzzleBoard[0]) - 1):
+                cell = processedPuzzleBoard[y][x+1]
+            elif i == "left" and x-1 >= 0:
+                cell = processedPuzzleBoard[y][x-1]
+            elif i == "down" and y+1 <= (len(puzzleBoard) - 1):
+                cell = processedPuzzleBoard[y+1][x]
+            elif i == "up" and y-1 >= 0:
+                cell = processedPuzzleBoard[y-1][x]
+            else:
+                continue
+            cell.lightable = 0
+    
+        except IndexError:
+            continue
+    
+    return processedPuzzleBoard
 
 def setFour(puzzleBoard, x, y):
     processedPuzzleBoard = puzzleBoard
@@ -86,7 +101,7 @@ def setFour(puzzleBoard, x, y):
     finally:
         return processedPuzzleBoard
 
-def dealWithRest(puzzleBoard, x, y):
+def dealWithRest(puzzleBoard, x, y, changed):
     xMarker = []
     yMarker = []
     surroundings = 0
@@ -112,12 +127,13 @@ def dealWithRest(puzzleBoard, x, y):
             print("Calling PlaceBulb for (" + str(x) + "," + str(y) + ")")
             for i in range(len(xMarker)):
                 puzzleBoard = puzzleBoard[xMarker[i]][yMarker[i]].placeBulb(puzzleBoard, xMarker[i], yMarker[i])
+                changed = True
         else:
             print("(" + str(x) + "," + str(y) + ") not solvable yet. Moving on.")
     else:
         print("Cell already satisfied, moving on")
 
-    return puzzleBoard
+    return puzzleBoard, changed
 
 def countSurroundings(puzzleBoard, xMarker, yMarker, x, y):
     count = 0

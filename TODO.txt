@@ -11,3 +11,7 @@ For Preprocessing:
     - 3s                                DONE
     - 4s                                DONE
 
+
+WARNING: 
+    - Made lookForRest() loop until there isn't a change in the board. May not work as intended, quite hard to test. If there is a problem with incorrect solves, check that first.
+
