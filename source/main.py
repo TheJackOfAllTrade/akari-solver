@@ -1,5 +1,6 @@
 import preprocessing as pp
 import set_priority as sp
+import graph as gr
 
 
 class Cell: #Each cell in the puzzle board and its attributes
@@ -151,6 +152,10 @@ print("Puzzle preprocessed")
 print("\n############SETTING INITIAL PRIORITIES############")
 proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priority.py
 print("Priorities set")
+
+print("\n############CREATING GRAPH############")
+possibleMoves = gr.createGraph(proPuzzleBoard)
+print("Graph Created")
 
 
 
