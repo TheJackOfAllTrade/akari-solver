@@ -154,7 +154,12 @@ proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priorit
 print("Priorities set")
 
 print("\n############CREATING GRAPH############")
-possibleMoves = gr.createGraph(proPuzzleBoard)
+possibleMoves, connectedNodes = gr.createGraph(proPuzzleBoard)
+movesList = []
+for x in range(len(possibleMoves)):
+    movesList.append(possibleMoves[x].nodeID)
+print(movesList)
+print(connectedNodes)
 print("Graph Created")
 
 
