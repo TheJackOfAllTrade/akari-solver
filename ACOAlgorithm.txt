@@ -1,0 +1,22 @@
+Thoughts on how ACO Algorithm is going to work (Based off whatever is in the wiki page)
+
+Inital Move:
+    1. Each initial node will have an equal probability and a default pheromone
+            This makes sense considering the edge selection equation:
+            probability of selected edge = (Graph Distance * Pheromones) of selected Node / Sum of (Graph Distance * Pheromones) of all connected Nodes
+    2. After these values are set, a node is selected at random taking into consideration this weighting
+
+    3. After a node is selected, place a lightbulb in the corresponding location and ripple constraints
+            (Functions for this should already be set in order to preprocess the game board anyways)
+
+    4. After constraints are set, we essentially have a new game board and the process can be checked for completion
+            (A game board is complete if there are no available moves, a game board is considered solved if all constraints are still met when no moves are available)
+    
+    5. After checking for a solution
+            - If solution is valid, end Algorithm and output final solution
+            - If solution is not valid, repeat algorithm by creating a new 'subgraph' at the original selected node until a 'final solution' is found
+
+Subsequent Moves:
+    1. Update the Pheromones for each node using Pheromone Update Equation
+            Pheromone Update = ((1 - P.E.C) * Pheromones) + Sum, between the K'th ant and total number of ants, of the cumulative cost function
+            Cost function is added to each path for everytime ant K crosses it
