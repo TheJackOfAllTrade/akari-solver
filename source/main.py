@@ -1,6 +1,7 @@
 import preprocessing as pp
 import set_priority as sp
 import graph as gr
+import ACO
 
 
 class Cell: #Each cell in the puzzle board and its attributes
@@ -154,14 +155,12 @@ proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priorit
 print("Priorities set")
 
 print("\n############CREATING GRAPH############")
-possibleMoves, connectedNodes = gr.createGraph(proPuzzleBoard)
-movesList = []
-for x in range(len(possibleMoves)):
-    movesList.append(possibleMoves[x].nodeID)
-print(movesList)
-print(connectedNodes)
+globalNodeList, connectedNodes = gr.createGraph(proPuzzleBoard)
 print("Graph Created")
 
+print("\n############STARTING ACO############")
+ACO.chooseMove(proPuzzleBoard, globalNodeList, 0)
+print("ACO Done probably")
 
 
 

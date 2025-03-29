@@ -4,6 +4,7 @@ Inital Move:
     1. Each initial node will have an equal probability and a default pheromone
             This makes sense considering the edge selection equation:
             probability of selected edge = (Graph Distance * Pheromones) of selected Node / Sum of (Graph Distance * Pheromones) of all connected Nodes
+            Graph Distance should always be 1 unless you implement the priority system
     2. After these values are set, a node is selected at random taking into consideration this weighting
 
     3. After a node is selected, place a lightbulb in the corresponding location and ripple constraints
