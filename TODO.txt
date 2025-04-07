@@ -11,7 +11,10 @@ For Preprocessing:
     - 3s                                DONE
     - 4s                                DONE
 
-
-WARNING: 
-    - Made lookForRest() loop until there isn't a change in the board. May not work as intended, quite hard to test. If there is a problem with incorrect solves, check that first.
+For ACO:
+    Generated first solution
+    Some of these solutions are placing multiple lightbulbs around a 1 cell. This is not good, need to find out why but shouldn't stop ACO from doing it's thing (Will just generate incorrect solutions)
+    Need to check the board for completion
+    Update Pheromones
+    Do ACO again until a correct solution is found
 

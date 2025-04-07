@@ -142,7 +142,7 @@ def writeBoardStateToCSV(puzzleBoard, type):
         
 print("\n############INITIALISING PUZZLE############")
 puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
-filename = "puzzles/10x10-5"
+filename = "puzzles/7x7-1"
 readFile(filename) #Initialises puzzleBoard
 print("Puzzle Initialised!")
 
@@ -155,11 +155,12 @@ proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priorit
 print("Priorities set")
 
 print("\n############CREATING GRAPH############")
-globalNodeList, connectedNodes = gr.createGraph(proPuzzleBoard)
+globalNodeList = gr.createGraph(proPuzzleBoard) #Calls function in graph.py
 print("Graph Created")
 
-print("\n############STARTING ACO############")
-ACO.chooseMove(proPuzzleBoard, globalNodeList, 0)
+print("\n############STARTING ACO############") #All functions called are in ACO.py
+ACO.setProbability(globalNodeList, 0)
+proPuzzleBoard = ACO.startACO(proPuzzleBoard, globalNodeList, 0)
 print("ACO Done probably")
 
 

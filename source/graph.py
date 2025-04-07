@@ -13,10 +13,9 @@ class Node:
     def updateGraph(startPoint):
         print("Temp String")
 
-globalNodeList = []
 
 def createGraph(puzzleBoard):
-
+    globalNodeList = []
     startNode = Node(0, -1, -1, [], [], [], [])
     globalNodeList.append(startNode)
     global currentID
@@ -34,7 +33,7 @@ def createGraph(puzzleBoard):
             else:
                 continue
     
-    return globalNodeList, startNode.nodeConnections
+    return globalNodeList
 
     print("Woah there bucko, this ain't finished yet")
 
