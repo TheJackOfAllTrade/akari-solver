@@ -18,3 +18,10 @@ For ACO:
     Update Pheromones
     Do ACO again until a correct solution is found
 
+Fitness of Solution:
+    To check the fitness of the solution a score will be given to each satisfied cell
+    For black cells = 0
+    For empty cells = 1
+    For Lightbulbs = 1
+    For Numbered Cells = 2
+    This is totaled and then added to the Pheromones for that current path

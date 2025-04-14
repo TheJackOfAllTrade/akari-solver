@@ -32,6 +32,106 @@ def startACO(puzzleBoard, nodeList, startNode):
     else:
         startACO(puzzleBoard, currentNodeList, 0)
 
+    print("Checking Solution...")
+    print("Solved Status: " + str(checkSolution(puzzleBoard)))
+
     return puzzleBoard
 
+def checkSolution(puzzleBoard):
+    for y in range(len(puzzleBoard)):
+        for x in range(len(puzzleBoard[0])):
+            currCell = puzzleBoard[y][x]
+            if currCell.cellType == "-" and currCell.lit == 1:
+                print("A - at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                continue
+            elif currCell.cellType == "0" and checkSatisfied(puzzleBoard, x, y, 0):
+                print("A 0 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                continue
+            elif currCell.cellType == "1" and checkSatisfied(puzzleBoard, x, y, 1):
+                print("A 1 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                continue
+            elif currCell.cellType == "2" and checkSatisfied(puzzleBoard, x, y, 2):
+                print("A 2 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                continue
+            elif currCell.cellType == "3" and checkSatisfied(puzzleBoard, x, y, 3):
+                print("A 3 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                continue
+            elif currCell.cellType == "4" and checkSatisfied(puzzleBoard, x, y, 4):
+                print("A 4 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+            elif currCell.cellType == "L" or currCell.cellType == "#":
+                print("A " + currCell.cellType + " at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                continue
+            else:
+                print("This solution is not solved")
+                return False
+    return True
+
+
+def checkSatisfied(puzzleBoard, x, y, type):
+    directions = ["up", "down", "left", "right"]
+    count = 0
+
+    if type == 0:
+        for i in directions:
+            try:
+                if i == "up":
+                    cell = puzzleBoard[y-1][x]
+                    if (y-1 >= 0) and cell.cellType != "L":
+                        count += 1
+                    else:
+                        continue
+                elif i == "down":
+                    cell = puzzleBoard[y+1][x]
+                    if (y+1 <= len(puzzleBoard)) and cell.cellType != "L":
+                        count += 1
+                    else:
+                        continue
+                elif i == "left":
+                    cell = puzzleBoard[y][x-1]
+                    if (x-1 >= 0) and cell.cellType != "L":
+                        count += 1
+                    else:
+                        continue
+                elif i == "right":
+                    cell = puzzleBoard[y][x+1]
+                    if (x+1 <= len(puzzleBoard[0])) and cell.cellType != "L":
+                        count += 1
+                    else:
+                        continue
+            except IndexError:
+                    continue
+    else:
+        for i in directions:
+            try:
+                if i == "up":
+                    cell = puzzleBoard[y-1][x]
+                    if (y-1 >= 0) and cell.cellType == "L":
+                        count += 1
+                    else:
+                        continue
+                elif i == "down":
+                    cell = puzzleBoard[y+1][x]
+                    if (y+1 <= len(puzzleBoard)) and cell.cellType == "L":
+                        count += 1
+                    else:
+                        continue
+                elif i == "left":
+                    cell = puzzleBoard[y][x-1]
+                    if (x-1 >= 0) and cell.cellType == "L":
+                        count += 1
+                    else:
+                        continue
+                elif i == "right":
+                    cell = puzzleBoard[y][x+1]
+                    if (x+1 <= len(puzzleBoard[0])) and cell.cellType == "L":
+                        count += 1
+                    else:
+                        continue
+            except IndexError:
+                    continue
+            
+    if count == type:
+        return True
+    else:
+        return False
     

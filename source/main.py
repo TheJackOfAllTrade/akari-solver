@@ -86,7 +86,7 @@ def outputBoard(puzzleBoard, type):
     if type == "cell":
         for y in range(len(puzzleBoard)):
             line = []
-            for x in range(len(puzzleBoard[y])):
+            for x in range(len(puzzleBoard[0])):
                 line.append(puzzleBoard[y][x].cellType)
             print(line)
     elif type == "lit":
@@ -139,7 +139,22 @@ def writeBoardStateToCSV(puzzleBoard, type):
     else:
         print("Not a valid output type (csv method)")
 
-        
+def createInitialCopy(puzzleBoard):
+    initialPuzzleBoard = []
+    for y in range(len(puzzleBoard)):
+        currentLine = []
+        for x in range(len(puzzleBoard[0])):
+            currCell = puzzleBoard[y][x]
+            initialCell = Cell(currCell.cellType, currCell.lit, currCell.lightable, currCell.priority)
+            currentLine.append(initialCell)
+        initialPuzzleBoard.append(currentLine)
+
+    return initialPuzzleBoard
+
+
+
+######Main#####
+
 print("\n############INITIALISING PUZZLE############")
 puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
 filename = "puzzles/7x7-1"
@@ -160,6 +175,7 @@ print("Graph Created")
 
 print("\n############STARTING ACO############") #All functions called are in ACO.py
 ACO.setProbability(globalNodeList, 0)
+initialPuzzleBoard = createInitialCopy(proPuzzleBoard)
 proPuzzleBoard = ACO.startACO(proPuzzleBoard, globalNodeList, 0)
 print("ACO Done probably")
 
@@ -191,6 +207,8 @@ print("#####LIGHTABLE#####")
 outputBoard(proPuzzleBoard, "lightable")
 print("#####PRIORITY#####")
 outputBoard(proPuzzleBoard, "priority")
+print("#####INITIAL#####")
+outputBoard(initialPuzzleBoard, "cell")
 print("\n\n\n")
 
 writeBoardStateToCSV(proPuzzleBoard, "cell")
