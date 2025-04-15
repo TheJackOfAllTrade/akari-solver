@@ -176,8 +176,9 @@ print("Graph Created")
 print("\n############STARTING ACO############") #All functions called are in ACO.py
 ACO.setProbability(globalNodeList, 0)
 initialPuzzleBoard = createInitialCopy(proPuzzleBoard)
-proPuzzleBoard = ACO.startACO(proPuzzleBoard, globalNodeList, 0)
+proPuzzleBoard, currentPath = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
 print("ACO Done probably")
+
 
 
 

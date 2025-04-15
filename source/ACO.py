@@ -2,7 +2,13 @@ import random
 import set_priority
 import graph
 
+currentPath = []
+recursionLimit = 200
+currentRecursion = 0
+
 def setProbability(nodeList, node):
+    #print(len(nodeList))
+    #print(node)
     currentNode = nodeList[node]
     probSum = 0
     for x in range(len(currentNode.nodeConnections)): #Adds up all current (Phero * Distance) for every branching node
@@ -14,57 +20,85 @@ def setProbability(nodeList, node):
     for x in currentNode.nodeConnections: #Recursively calls the same function until every node is visited
         setProbability(nodeList, x)
 
-def startACO(puzzleBoard, nodeList, startNode):
-    currentNode = nodeList[startNode]
-    nodeChoice = random.choices(currentNode.nodeConnections, weights=currentNode.nodeWeights, k=1) #Gets a random node from the connections of the current node based on the weightings set beforehand
-    nodeChoice = nodeList[nodeChoice[0]]
-    print("(" + str(nodeChoice.xCoord) + "," + str(nodeChoice.yCoord) + ")")
+def startACO(initialBoard, puzzleBoard, nodeList, startNode):
+    global currentRecursion
+    global recursionLimit
 
-    puzzleBoard = puzzleBoard[nodeChoice.yCoord][nodeChoice.xCoord].placeBulb(puzzleBoard, nodeChoice.xCoord, nodeChoice.yCoord)
-    puzzleBoard = set_priority.setPriorities(puzzleBoard)
-    currentNodeList = graph.createGraph(puzzleBoard)
-    setProbability(currentNodeList, 0)
-
-    print(currentNodeList)
-    if len(currentNodeList) == 1:
-        print("ACO Finished")
-        return puzzleBoard
+    if currentRecursion == recursionLimit:
+        print("RECURSION LIMIT REACHED")
+        exit()
     else:
-        startACO(puzzleBoard, currentNodeList, 0)
+        currentNode = nodeList[startNode]
+        nodeChoice = random.choices(currentNode.nodeConnections, weights=currentNode.nodeWeights, k=1) #Gets a random node from the connections of the current node based on the weightings set beforehand
+        nodeChoice = nodeList[nodeChoice[0]]
+        print("(" + str(nodeChoice.xCoord) + "," + str(nodeChoice.yCoord) + ")")
+        currentPath.append(nodeChoice.nodeID)
 
-    print("Checking Solution...")
-    print("Solved Status: " + str(checkSolution(puzzleBoard)))
+        puzzleBoard = puzzleBoard[nodeChoice.yCoord][nodeChoice.xCoord].placeBulb(puzzleBoard, nodeChoice.xCoord, nodeChoice.yCoord)
+        puzzleBoard = set_priority.setPriorities(puzzleBoard)
+        nodeChoice.updateGraph(puzzleBoard)
+        #currentNodeList = graph.createGraph(puzzleBoard)
+        setProbability(nodeList, nodeChoice.nodeID)
 
-    return puzzleBoard
+        #print(currentNodeList)
+        if not nodeList[nodeChoice.nodeID].nodeConnections:
+            print("ACO Finished")
+            print("Checking Solution...")
+            solved, fitness = checkSolution(puzzleBoard)
+            print("Solved Status: " + str(solved))
+
+            if not solved:
+                updatePheromones(currentPath, nodeList, fitness)
+                currentRecursion += 1
+                startACO(initialBoard, initialBoard, nodeList, 0)
+            else:
+                #TODO: Put return here when it's a possible path
+                print("Uhhh, I think we're done?")
+        else:
+            startACO(initialBoard, puzzleBoard, nodeList, 0)
+
+        return puzzleBoard, currentPath 
 
 def checkSolution(puzzleBoard):
+    fitness = 0
     for y in range(len(puzzleBoard)):
         for x in range(len(puzzleBoard[0])):
             currCell = puzzleBoard[y][x]
             if currCell.cellType == "-" and currCell.lit == 1:
-                print("A - at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                #print("- at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                fitness += 1
                 continue
             elif currCell.cellType == "0" and checkSatisfied(puzzleBoard, x, y, 0):
-                print("A 0 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                #print("0 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                fitness += 1
                 continue
             elif currCell.cellType == "1" and checkSatisfied(puzzleBoard, x, y, 1):
-                print("A 1 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                #print("1 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                fitness += 2
                 continue
             elif currCell.cellType == "2" and checkSatisfied(puzzleBoard, x, y, 2):
-                print("A 2 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                #print("2 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                fitness += 2
                 continue
             elif currCell.cellType == "3" and checkSatisfied(puzzleBoard, x, y, 3):
-                print("A 3 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                #print("3 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                fitness += 2
                 continue
             elif currCell.cellType == "4" and checkSatisfied(puzzleBoard, x, y, 4):
-                print("A 4 at: (" + str(x) + "," + str(y) + ") is satisfied.")
-            elif currCell.cellType == "L" or currCell.cellType == "#":
-                print("A " + currCell.cellType + " at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                #print("4 at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                fitness += 2
+                continue
+            elif currCell.cellType == "L":
+                #print("L at: (" + str(x) + "," + str(y) + ") is satisfied.")
+                fitness += 1
+                continue
+            elif currCell.cellType == "#":
+                #print("# at: (" + str(x) + "," + str(y) + ") is satisfied.")
                 continue
             else:
-                print("This solution is not solved")
-                return False
-    return True
+                #print("This solution is not solved")
+                return False, fitness
+    return True, fitness
 
 
 def checkSatisfied(puzzleBoard, x, y, type):
@@ -135,3 +169,27 @@ def checkSatisfied(puzzleBoard, x, y, type):
     else:
         return False
     
+
+def updatePheromones(nodePath, nodeList, fitness):
+    #print("THIS IS WHAT YOU'RE LOOKING FOR")
+    nodeIDs = []
+    for i in nodeList:
+        nodeIDs.append(i.nodeID)
+    #print(nodeIDs)
+    #print("THIS IS AFTER WHAT YOU'RE LOOKING FOR")
+    #print(nodePath)
+
+    startNode = nodeList[0]
+    print("Current Node Pheromone: " + str(startNode.nodePheromones[nodePath[0]]))
+    startNode.nodePheromones[nodePath[0]] = pheromoneUpdateEquation(startNode.nodePheromones[nodePath[0]], fitness)
+    print("Fitness: " + str(fitness))
+    print("New Node Pheromones: " + str(startNode.nodePheromones[nodePath[0]]))
+
+    for i in range(len(nodePath) - 1):
+        #print(nodePath[i])
+        currentNode = nodePath[i]
+        targetNode = nodePath[i + 1]
+
+def pheromoneUpdateEquation(currentPheromone, fitness):
+    evapCoef = 0
+    return ((1 - evapCoef) * currentPheromone) + fitness

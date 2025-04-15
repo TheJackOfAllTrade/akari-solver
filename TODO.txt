@@ -25,3 +25,9 @@ Fitness of Solution:
     For Lightbulbs = 1
     For Numbered Cells = 2
     This is totaled and then added to the Pheromones for that current path
+
+NOTE TO SELF:
+    Got it recursing until correct solution.
+    Issue with that is it's trying to place bulbs in places it can't place them (where lightable is 0)
+    Something to do with the state of the saved gameboard on subsequent recursions
+    need to reset the gameboard every ACO reset (not evertime a path is chosen)

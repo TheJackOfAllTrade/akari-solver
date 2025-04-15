@@ -1,5 +1,7 @@
 import numpy as np
 
+globalNodeList = []
+
 class Node:
     def __init__(self, nodeID, xCoord, yCoord, nodeConnections, nodeWeights, nodeDistance, nodePheromones):
         self.nodeID = nodeID #So each node can be identified
@@ -10,12 +12,27 @@ class Node:
         self.nodeDistance = nodeDistance #Follows same order as the connections to list their Distance (Should be all 1 if priotity is not implemented)
         self.nodePheromones = nodePheromones #Follows same order as the connections to list their Pheromones (Updated on pheromone update)
 
-    def updateGraph(startPoint):
-        print("Temp String")
-
+    def updateGraph(self, puzzleBoard):
+        if not self.nodeConnections:
+            global currentID
+            currentID = len(globalNodeList)
+            for y in range(len(puzzleBoard)):
+                for x in range(len(puzzleBoard[0])):
+                    if puzzleBoard[y][x].priority > 0:
+                        newNode = Node(currentID, x, y, [], [], [], [])
+                        self.nodeConnections.append(currentID)
+                        self.nodeWeights.append(0)
+                        self.nodeDistance.append(1)
+                        self.nodePheromones.append(1)
+                        globalNodeList.append(newNode)
+                        currentID += 1
+                    else:
+                        continue
+            return globalNodeList
+        else:
+            return globalNodeList
 
 def createGraph(puzzleBoard):
-    globalNodeList = []
     startNode = Node(0, -1, -1, [], [], [], [])
     globalNodeList.append(startNode)
     global currentID
