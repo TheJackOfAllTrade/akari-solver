@@ -18,7 +18,12 @@ class Cell: #Each cell in the puzzle board and its attributes
                 board[y][x].cellType = "L"
             else:
                 print("A lightbulb actually wasn't placed")
-
+                print("-*-*-*-*-*-*-*-*-*CELL*-*-*-*-*-*-*-*-*-*-")
+                outputBoard(board, "cell")
+                print("-*-*-*-*-*-*PRIORITY*-*-*-*-*-*-*-*-*-")
+                outputBoard(board, "priority")
+                print("-*-*-*-*-*-*-*LIT*-*-*-*-*-*-*-")
+                outputBoard(board, "lit")
         
             for i in directions:
                 stopped = False
@@ -176,6 +181,8 @@ print("Graph Created")
 print("\n############STARTING ACO############") #All functions called are in ACO.py
 ACO.setProbability(globalNodeList, 0)
 initialPuzzleBoard = createInitialCopy(proPuzzleBoard)
+#writeBoardStateToCSV(initialPuzzleBoard, "cell")
+
 proPuzzleBoard, currentPath = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
 print("ACO Done probably")
 

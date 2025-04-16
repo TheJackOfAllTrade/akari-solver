@@ -1,6 +1,7 @@
 import numpy as np
 
 globalNodeList = []
+globalNodePheromones = []
 
 class Node:
     def __init__(self, nodeID, xCoord, yCoord, nodeConnections, nodeWeights, nodeDistance, nodePheromones):
@@ -10,7 +11,7 @@ class Node:
         self.nodeConnections = nodeConnections #Lists all connections to that node
         self.nodeWeights = nodeWeights #Follows same order as the connections to list their weightings
         self.nodeDistance = nodeDistance #Follows same order as the connections to list their Distance (Should be all 1 if priotity is not implemented)
-        self.nodePheromones = nodePheromones #Follows same order as the connections to list their Pheromones (Updated on pheromone update)
+        self.nodePheromones = globalNodePheromones #Follows same order as the connections to list their Pheromones (Updated on pheromone update)
 
     def updateGraph(self, puzzleBoard):
         if not self.nodeConnections:
@@ -24,6 +25,7 @@ class Node:
                         self.nodeWeights.append(0)
                         self.nodeDistance.append(1)
                         self.nodePheromones.append(1)
+                        globalNodePheromones.append(1)
                         globalNodeList.append(newNode)
                         currentID += 1
                     else:
@@ -43,8 +45,9 @@ def createGraph(puzzleBoard):
                 newNode = Node(currentID, x, y, [], [], [], [])
                 startNode.nodeConnections.append(currentID)
                 startNode.nodeWeights.append(0)
-                startNode.nodeDistance.append(1)
+                startNode.nodeDistance.append(puzzleBoard[y][x].priority)
                 startNode.nodePheromones.append(1)
+                globalNodePheromones.append(1)
                 globalNodeList.append(newNode)
                 currentID += 1
             else:

@@ -3,7 +3,7 @@ import set_priority
 import graph
 
 currentPath = []
-recursionLimit = 200
+recursionLimit = 990
 currentRecursion = 0
 
 def setProbability(nodeList, node):
@@ -23,11 +23,13 @@ def setProbability(nodeList, node):
 def startACO(initialBoard, puzzleBoard, nodeList, startNode):
     global currentRecursion
     global recursionLimit
+    global currentPath
 
     if currentRecursion == recursionLimit:
         print("RECURSION LIMIT REACHED")
-        exit()
+        
     else:
+        currentRecursion += 1
         currentNode = nodeList[startNode]
         nodeChoice = random.choices(currentNode.nodeConnections, weights=currentNode.nodeWeights, k=1) #Gets a random node from the connections of the current node based on the weightings set beforehand
         nodeChoice = nodeList[nodeChoice[0]]
@@ -47,17 +49,35 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
             solved, fitness = checkSolution(puzzleBoard)
             print("Solved Status: " + str(solved))
 
+            # print("++++++++Current Solution++++++++")
+            # print("Current Node Path: ", currentPath)
+            # for y in range(len(puzzleBoard)):
+            #     line = []
+            #     for x in range(len(puzzleBoard[0])):
+            #         line.append(puzzleBoard[y][x].cellType)
+            #     print(line)
+            # print("++++++++++++++++++++++++++++++++")
+            # print("++++++++Initial Board+++++++++++")
+            # for y in range(len(initialBoard)):
+            #     line = []
+            #     for x in range(len(initialBoard[0])):
+            #         line.append(initialBoard[y][x].cellType)
+            #     print(line)
+            # print("++++++++++++++++++++++++++++++++")
+
             if not solved:
                 updatePheromones(currentPath, nodeList, fitness)
-                currentRecursion += 1
-                startACO(initialBoard, initialBoard, nodeList, 0)
+                currentPath = []
+                puzzleBoard = reinitialisePuzzleBoard(puzzleBoard, initialBoard)
+                print("RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET ")
+                puzzleBoard, currentPath = startACO(initialBoard, puzzleBoard, nodeList, 0)
             else:
                 #TODO: Put return here when it's a possible path
                 print("Uhhh, I think we're done?")
         else:
-            startACO(initialBoard, puzzleBoard, nodeList, 0)
+            puzzleBoard, currentPath = startACO(initialBoard, puzzleBoard, nodeList, 0)
 
-        return puzzleBoard, currentPath 
+    return puzzleBoard, currentPath 
 
 def checkSolution(puzzleBoard):
     fitness = 0
@@ -180,16 +200,39 @@ def updatePheromones(nodePath, nodeList, fitness):
     #print(nodePath)
 
     startNode = nodeList[0]
-    print("Current Node Pheromone: " + str(startNode.nodePheromones[nodePath[0]]))
+    #print("Current Node Pheromone: " + str(startNode.nodePheromones[nodePath[0]]))
     startNode.nodePheromones[nodePath[0]] = pheromoneUpdateEquation(startNode.nodePheromones[nodePath[0]], fitness)
-    print("Fitness: " + str(fitness))
-    print("New Node Pheromones: " + str(startNode.nodePheromones[nodePath[0]]))
+    #print("Fitness: " + str(fitness))
+    #print("New Node Pheromones: " + str(startNode.nodePheromones[nodePath[0]]))
 
     for i in range(len(nodePath) - 1):
         #print(nodePath[i])
-        currentNode = nodePath[i]
+        
+        currentNode = nodeList[nodePath[i]]
         targetNode = nodePath[i + 1]
+
+        #print("Node Path: ", nodePath)
+        #print("currentPheromones: ", currentNode.nodePheromones)
+        #print(currentNode.nodeID)
+        #print(targetNode)
+        currentNode.nodePheromones[targetNode] = pheromoneUpdateEquation(currentNode.nodePheromones[targetNode], fitness)
+        #if currentNode.nodeID == 1:
+            #print("Node ", currentNode.nodeID, "updated to: ", currentNode.nodePheromones[targetNode])
+
 
 def pheromoneUpdateEquation(currentPheromone, fitness):
     evapCoef = 0
     return ((1 - evapCoef) * currentPheromone) + fitness
+
+def reinitialisePuzzleBoard(puzzleBoard, initialPuzzleBoard):
+    from main import Cell
+    puzzleBoard = []
+    for y in range(len(initialPuzzleBoard)):
+        currentLine = []
+        for x in range(len(initialPuzzleBoard[0])):
+            currCell = initialPuzzleBoard[y][x]
+            initialCell = Cell(currCell.cellType, currCell.lit, currCell.lightable, currCell.priority)
+            currentLine.append(initialCell)
+        puzzleBoard.append(currentLine)
+
+    return puzzleBoard
