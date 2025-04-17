@@ -163,12 +163,12 @@ def createInitialCopy(puzzleBoard):
 
 
 ######Main#####
-sys.setrecursionlimit(1500)
+sys.setrecursionlimit(5000)
 
 
 print("\n############INITIALISING PUZZLE############")
 puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
-filename = "puzzles/7x7-2"
+filename = "puzzles/7x7-1"
 readFile(filename) #Initialises puzzleBoard
 print("Puzzle Initialised!")
 
@@ -188,8 +188,17 @@ print("\n############STARTING ACO############") #All functions called are in ACO
 ACO.setProbability(globalNodeList, 0)
 initialPuzzleBoard = createInitialCopy(proPuzzleBoard)
 #writeBoardStateToCSV(initialPuzzleBoard, "cell")
+for x in range(1000):
+    try:
+        proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
+        if solved == True:
+            break
+        else:
+            continue
+    except RecursionError:
+        continue
 
-proPuzzleBoard, currentPath = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
+
 print("ACO Done probably")
 
 

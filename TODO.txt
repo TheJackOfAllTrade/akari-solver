@@ -27,7 +27,6 @@ Fitness of Solution:
     This is totaled and then added to the Pheromones for that current path
 
 NOTE TO SELF:
-    Got it recursing until correct solution.
-    Issue with that is it's trying to place bulbs in places it can't place them (where lightable is 0)
-    Something to do with the state of the saved gameboard on subsequent recursions
-    need to reset the gameboard every ACO reset (not evertime a path is chosen)
+    FIRST CORRECT SOLUTION
+    New issue, keep hitting recursion limit for more complex puzzles
+    May need to keep the RESET stuff out of recursions (i.e. Pull them out into main so that whenever ACO starts fresh it is not adding to recursion stack)

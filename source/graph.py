@@ -27,6 +27,7 @@ class Node:
                         self.nodePheromones.append(1)
                         globalNodePheromones.append(1)
                         globalNodeList.append(newNode)
+                        print("Adding Node: ", newNode.nodeID, " at (", x, ",", y, ")")
                         currentID += 1
                     else:
                         continue

@@ -3,7 +3,7 @@ import set_priority
 import graph
 
 currentPath = []
-recursionLimit = 1600
+recursionLimit = 5000
 currentRecursion = 0
 
 def setProbability(nodeList, node):
@@ -27,7 +27,7 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
 
     if currentRecursion == recursionLimit:
         print("RECURSION LIMIT REACHED")
-        return puzzleBoard, currentPath
+        return puzzleBoard, currentPath, False
     else:
         currentRecursion += 1
         currentNode = nodeList[startNode]
@@ -74,14 +74,14 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
                 currentPath = []
                 puzzleBoard = reinitialisePuzzleBoard(puzzleBoard, initialBoard)
                 print("RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET ")
-                puzzleBoard, currentPath = startACO(initialBoard, puzzleBoard, nodeList, 0)
+                puzzleBoard, currentPath, solved = startACO(initialBoard, puzzleBoard, nodeList, 0)
             else:
                 #TODO: Put return here when it's a possible path
                 print("Uhhh, I think we're done?")
         else:
-            puzzleBoard, currentPath = startACO(initialBoard, puzzleBoard, nodeList, nodeChoice.nodeID)
+            puzzleBoard, currentPath, solved = startACO(initialBoard, puzzleBoard, nodeList, nodeChoice.nodeID)
  
-    return puzzleBoard, currentPath
+    return puzzleBoard, currentPath, solved
 
 def checkSolution(puzzleBoard):
     fitness = 0
