@@ -27,7 +27,7 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
 
     if currentRecursion == recursionLimit:
         print("RECURSION LIMIT REACHED")
-        
+        return puzzleBoard, currentPath
     else:
         currentRecursion += 1
         currentNode = nodeList[startNode]
@@ -76,6 +76,8 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
                 print("Uhhh, I think we're done?")
         else:
             puzzleBoard, currentPath = startACO(initialBoard, puzzleBoard, nodeList, 0)
+
+    
 
     return puzzleBoard, currentPath 
 
@@ -221,7 +223,7 @@ def updatePheromones(nodePath, nodeList, fitness):
 
 
 def pheromoneUpdateEquation(currentPheromone, fitness):
-    evapCoef = 0
+    evapCoef = 0.9
     return ((1 - evapCoef) * currentPheromone) + fitness
 
 def reinitialisePuzzleBoard(puzzleBoard, initialPuzzleBoard):
