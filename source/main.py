@@ -1,3 +1,4 @@
+import sys
 import preprocessing as pp
 import set_priority as sp
 import graph as gr
@@ -13,61 +14,62 @@ class Cell: #Each cell in the puzzle board and its attributes
 
     def placeBulb(self, board, x, y):
         directions = ["up","down","left","right"]
-        for l in directions: #I actually can't figure out the logic of why this works as I used it for a complete different reason. If it is removed it will no longer work properly.
-            if board[y][x].lightable == True:
-                board[y][x].cellType = "L"
-                
-                for i in directions:
-                    stopped = False
-                    yCoord = y
-                    xCoord = x
-                    while not stopped:
-                        if board[yCoord][xCoord].cellType == "-" or board[yCoord][xCoord].cellType == "L": 
-                            if i == "up":
-                                board[yCoord][xCoord].lit = 1
-                                board[yCoord][xCoord].lightable = 0
-                                if yCoord <= 0:
-                                    stopped = True
-                                else:
-                                    yCoord -= 1
-                            elif i == "down":
-                                #print(str(yCoord))
-                                board[yCoord][xCoord].lit = 1
-                                board[yCoord][xCoord].lightable = 0
-                                if yCoord >= (len(board) - 1):
-                                    stopped = True
-                                else:
-                                    yCoord += 1
-                            elif i == "left":
-                                board[yCoord][xCoord].lit = 1
-                                board[yCoord][xCoord].lightable = 0
-                                if xCoord <= 0:
-                                    stopped = True
-                                else:
-                                    xCoord -= 1
-                            elif i == "right":
-                                board[yCoord][xCoord].lit = 1
-                                board[yCoord][xCoord].lightable = 0
-                                if xCoord >= (len(board[0]) - 1):
-                                    stopped = True
-                                else:    
-                                    xCoord += 1
-                            else:
-                                print("OOOOOOO SCHOOOBIDY LOOBIDY!!")
-                        else:
-                            #print("Met Cell type [" + board[yCoord][xCoord].cellType + "]. Moving on...")
-                            stopped = True
-            else:
-                print("A lightbulb actually wasn't placed")
-                print("-*-*-*-*-*-*-*-*-*CELL*-*-*-*-*-*-*-*-*-*-")
-                outputBoard(board, "cell")
-                print("-*-*-*-*-*-*PRIORITY*-*-*-*-*-*-*-*-*-")
-                outputBoard(board, "priority")
-                print("-*-*-*-*-*-*-*LIT*-*-*-*-*-*-*-")
-                outputBoard(board, "lit")
-        
+        #for l in directions: #I actually can't figure out the logic of why this works as I used it for a complete different reason. If it is removed it will no longer work properly.
+        if board[y][x].lightable == True:
+            board[y][x].cellType = "L"
             
-            return board
+            for i in directions:
+                stopped = False
+                yCoord = y
+                xCoord = x
+                while not stopped:
+                    if board[yCoord][xCoord].cellType == "-" or board[yCoord][xCoord].cellType == "L": 
+                        if i == "up":
+                            board[yCoord][xCoord].lit = 1
+                            board[yCoord][xCoord].lightable = 0
+                            if yCoord <= 0:
+                                stopped = True
+                            else:
+                                yCoord -= 1
+                        elif i == "down":
+                            #print(str(yCoord))
+                            board[yCoord][xCoord].lit = 1
+                            board[yCoord][xCoord].lightable = 0
+                            if yCoord >= (len(board) - 1):
+                                stopped = True
+                            else:
+                                yCoord += 1
+                        elif i == "left":
+                            board[yCoord][xCoord].lit = 1
+                            board[yCoord][xCoord].lightable = 0
+                            if xCoord <= 0:
+                                stopped = True
+                            else:
+                                xCoord -= 1
+                        elif i == "right":
+                            board[yCoord][xCoord].lit = 1
+                            board[yCoord][xCoord].lightable = 0
+                            if xCoord >= (len(board[0]) - 1):
+                                stopped = True
+                            else:    
+                                xCoord += 1
+                        else:
+                            print("OOOOOOO SCHOOOBIDY LOOBIDY!!")
+                    else:
+                        #print("Met Cell type [" + board[yCoord][xCoord].cellType + "]. Moving on...")
+                        stopped = True
+        else:
+            print("-*-*-*-*-*-*-*-*-*CELL*-*-*-*-*-*-*-*-*-*-")
+            outputBoard(board, "cell")
+            print("-*-*-*-*-*-*PRIORITY*-*-*-*-*-*-*-*-*-")
+            outputBoard(board, "priority")
+            print("-*-*-*-*-*-*-*LIT*-*-*-*-*-*-*-")
+            outputBoard(board, "lit")
+            raise Exception("A lightbulb actually wasn't placed")
+            
+    
+        
+        return board
 
 def readFile(filename): #Reads the file and formats each cell into the Cell object, adding them to the puzzleBoard array
     file = open(filename, "r")
@@ -161,10 +163,12 @@ def createInitialCopy(puzzleBoard):
 
 
 ######Main#####
+sys.setrecursionlimit(1500)
+
 
 print("\n############INITIALISING PUZZLE############")
 puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
-filename = "puzzles/7x7-1"
+filename = "puzzles/7x7-2"
 readFile(filename) #Initialises puzzleBoard
 print("Puzzle Initialised!")
 
