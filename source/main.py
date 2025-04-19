@@ -7,7 +7,7 @@ import math
 
 
 puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
-filename = "puzzles/10x10-2"
+filename = "puzzles/10x10-5"
 
 class Cell: #Each cell in the puzzle board and its attributes
     def __init__(self, cellType, lit, lightable, priority):
@@ -195,22 +195,19 @@ def main():
     initialPuzzleBoard = createInitialCopy(proPuzzleBoard)
     #writeBoardStateToCSV(initialPuzzleBoard, "cell")
     proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
-    print(len(globalNodeList))
-    print("Pass 2")
-    proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
-    print(len(globalNodeList))
     
-    # for x in range(100000):
-    #     #print(len(globalNodeList))
-    #     if x % 1000 == 0:
-    #         print("Testing is ", math.trunc((x/100000) * 100), "% done.")
-    #     try:
-    #         if solved == True:
-    #             break
-    #         else:
-    #             proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
-    #     except RecursionError:
-    #         continue
+    
+    for x in range(100000):
+        #print(len(globalNodeList))
+        if x % 1000 == 0:
+            print("Testing is ", math.trunc((x/100000) * 100), "% done.")
+        try:
+            if solved == True:
+                break
+            else:
+                proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
+        except RecursionError:
+            continue
 
     print("Solved Status: ", solved)
     print("ACO Done probably")

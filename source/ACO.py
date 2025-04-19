@@ -17,8 +17,8 @@ def setProbability(nodeList, node):
     for x in range(len(currentNode.nodeConnections)): #Same loop as before but actually calculates the probability for each branching node
         currentNode.nodeWeights[x] = (currentNode.nodePheromones[x] * currentNode.nodeDistance[x]) / probSum
 
-    for x in currentNode.nodeConnections: #Recursively calls the same function until every node is visited
-        setProbability(nodeList, x)
+    # for x in currentNode.nodeConnections: #Recursively calls the same function until every node is visited
+    #     setProbability(nodeList, x)
 
 def startACO(initialBoard, puzzleBoard, nodeList, startNode):
     global currentRecursion
@@ -69,7 +69,7 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
 
             if not solved:
                 updatePheromones(currentPath, nodeList, fitness)
-                print("CurrentPath: ", currentPath)
+                #print("CurrentPath: ", currentPath)
                 currentPath = []
                 puzzleBoard = reinitialisePuzzleBoard(puzzleBoard, initialBoard)
                 #print("RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET ")
