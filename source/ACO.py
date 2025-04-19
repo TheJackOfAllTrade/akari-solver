@@ -29,29 +29,27 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
         print("RECURSION LIMIT REACHED")
         return puzzleBoard, currentPath, False
     else:
-        currentRecursion += 1
+        #currentRecursion += 1
         currentNode = nodeList[startNode]
         nodeChoice = random.choices(currentNode.nodeConnections, weights=currentNode.nodeWeights, k=1) #Gets a random node from the connections of the current node based on the weightings set beforehand
         nodeChoice = nodeList[nodeChoice[0]]
-        print("(" + str(nodeChoice.xCoord) + "," + str(nodeChoice.yCoord) + ")")
+        #print("(" + str(nodeChoice.xCoord) + "," + str(nodeChoice.yCoord) + ")")
         currentPath.append(nodeChoice.nodeID)
 
-        print("Node Choice: ", nodeChoice.nodeID)
-        print("Current Node Connections: ", currentNode.nodeConnections)
-        print("Current Node Path: ", currentPath)
+        # print("Node Choice: ", nodeChoice.nodeID)
+        # print("Current Node Connections: ", currentNode.nodeConnections)
+        # print("Current Node Path: ", currentPath)
 
         puzzleBoard = puzzleBoard[nodeChoice.yCoord][nodeChoice.xCoord].placeBulb(puzzleBoard, nodeChoice.xCoord, nodeChoice.yCoord)
         puzzleBoard = set_priority.setPriorities(puzzleBoard)
-        nodeChoice.updateGraph(puzzleBoard)
+        nodeChoice.updateGraph(puzzleBoard, currentPath)
         #currentNodeList = graph.createGraph(puzzleBoard)
         setProbability(nodeList, nodeChoice.nodeID)
 
         #print(currentNodeList)
         if not nodeList[nodeChoice.nodeID].nodeConnections:
-            print("ACO Finished")
-            print("Checking Solution...")
             solved, fitness = checkSolution(puzzleBoard)
-            print("Solved Status: " + str(solved))
+            #print("Solved Status: " + str(solved))
 
             # print("++++++++Current Solution++++++++")
             # print("Current Node Path: ", currentPath)
@@ -71,17 +69,18 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
 
             if not solved:
                 updatePheromones(currentPath, nodeList, fitness)
+                print("CurrentPath: ", currentPath)
                 currentPath = []
                 puzzleBoard = reinitialisePuzzleBoard(puzzleBoard, initialBoard)
-                print("RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET ")
-                puzzleBoard, currentPath, solved = startACO(initialBoard, puzzleBoard, nodeList, 0)
+                #print("RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET RESET ")
+                return puzzleBoard, currentPath, False
             else:
                 #TODO: Put return here when it's a possible path
+                return puzzleBoard, currentPath, True
                 print("Uhhh, I think we're done?")
         else:
             puzzleBoard, currentPath, solved = startACO(initialBoard, puzzleBoard, nodeList, nodeChoice.nodeID)
- 
-    return puzzleBoard, currentPath, solved
+            return puzzleBoard, currentPath, solved
 
 def checkSolution(puzzleBoard):
     fitness = 0
@@ -134,25 +133,25 @@ def checkSatisfied(puzzleBoard, x, y, type):
             try:
                 if i == "up":
                     cell = puzzleBoard[y-1][x]
-                    if (y-1 >= 0) and cell.cellType != "L":
+                    if (y-1 >= 0) and cell.cellType == "L":
                         count += 1
                     else:
                         continue
                 elif i == "down":
                     cell = puzzleBoard[y+1][x]
-                    if (y+1 <= len(puzzleBoard)) and cell.cellType != "L":
+                    if (y+1 <= len(puzzleBoard)) and cell.cellType == "L":
                         count += 1
                     else:
                         continue
                 elif i == "left":
                     cell = puzzleBoard[y][x-1]
-                    if (x-1 >= 0) and cell.cellType != "L":
+                    if (x-1 >= 0) and cell.cellType == "L":
                         count += 1
                     else:
                         continue
                 elif i == "right":
                     cell = puzzleBoard[y][x+1]
-                    if (x+1 <= len(puzzleBoard[0])) and cell.cellType != "L":
+                    if (x+1 <= len(puzzleBoard[0])) and cell.cellType == "L":
                         count += 1
                     else:
                         continue
@@ -196,9 +195,9 @@ def checkSatisfied(puzzleBoard, x, y, type):
 
 def updatePheromones(nodePath, nodeList, fitness):
     #print("THIS IS WHAT YOU'RE LOOKING FOR")
-    nodeIDs = []
-    for i in nodeList:
-        nodeIDs.append(i.nodeID)
+    # nodeIDs = []
+    # for i in nodeList:
+    #     nodeIDs.append(i.nodeID)
     #print(nodeIDs)
     #print("THIS IS AFTER WHAT YOU'RE LOOKING FOR")
     #print(nodePath)
@@ -225,7 +224,7 @@ def updatePheromones(nodePath, nodeList, fitness):
 
 
 def pheromoneUpdateEquation(currentPheromone, fitness):
-    evapCoef = 0.9
+    evapCoef = 0.2
     return ((1 - evapCoef) * currentPheromone) + fitness
 
 def reinitialisePuzzleBoard(puzzleBoard, initialPuzzleBoard):

@@ -3,7 +3,11 @@ import preprocessing as pp
 import set_priority as sp
 import graph as gr
 import ACO
+import math
 
+
+puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
+filename = "puzzles/10x10-2"
 
 class Cell: #Each cell in the puzzle board and its attributes
     def __init__(self, cellType, lit, lightable, priority):
@@ -163,56 +167,53 @@ def createInitialCopy(puzzleBoard):
 
 
 ######Main#####
-sys.setrecursionlimit(5000)
+def main():
+    sys.setrecursionlimit(5000)
 
 
-print("\n############INITIALISING PUZZLE############")
-puzzleBoard = [] #The initial puzzleboard, a 2D array of "Cell" Objects
-filename = "puzzles/7x7-1"
-readFile(filename) #Initialises puzzleBoard
-print("Puzzle Initialised!")
+    print("\n############INITIALISING PUZZLE############")
+    readFile(filename) #Initialises puzzleBoard
+    print("Puzzle Initialised!")
 
-print("\n############PREPROCESSING PUZZLE############")
-proPuzzleBoard = pp.preProcess(puzzleBoard) #Calls function in preprocessing.py
-print("Puzzle preprocessed")
+    print("\n############PREPROCESSING PUZZLE############")
+    proPuzzleBoard = pp.preProcess(puzzleBoard) #Calls function in preprocessing.py
+    print("Puzzle preprocessed")
 
-print("\n############SETTING INITIAL PRIORITIES############")
-proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priority.py
-print("Priorities set")
+    print("\n############SETTING INITIAL PRIORITIES############")
+    proPuzzleBoard = sp.setPriorities(proPuzzleBoard) #Calls function in set_priority.py
+    print("Priorities set")
+    outputBoard(proPuzzleBoard, "priority")
 
-print("\n############CREATING GRAPH############")
-globalNodeList = gr.createGraph(proPuzzleBoard) #Calls function in graph.py
-print("Graph Created")
-
-print("\n############STARTING ACO############") #All functions called are in ACO.py
-ACO.setProbability(globalNodeList, 0)
-initialPuzzleBoard = createInitialCopy(proPuzzleBoard)
-#writeBoardStateToCSV(initialPuzzleBoard, "cell")
-for x in range(1000):
-    try:
-        proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
-        if solved == True:
-            break
-        else:
-            continue
-    except RecursionError:
-        continue
-
-
-print("ACO Done probably")
+    print("\n############CREATING GRAPH############")
+    globalNodeList = gr.createGraph(proPuzzleBoard) #Calls function in graph.py
+    print("Graph Created")
 
 
 
+    print("\n############STARTING ACO############") #All functions called are in ACO.py
+    ACO.setProbability(globalNodeList, 0)
+    initialPuzzleBoard = createInitialCopy(proPuzzleBoard)
+    #writeBoardStateToCSV(initialPuzzleBoard, "cell")
+    proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
+    print(len(globalNodeList))
+    print("Pass 2")
+    proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
+    print(len(globalNodeList))
+    
+    # for x in range(100000):
+    #     #print(len(globalNodeList))
+    #     if x % 1000 == 0:
+    #         print("Testing is ", math.trunc((x/100000) * 100), "% done.")
+    #     try:
+    #         if solved == True:
+    #             break
+    #         else:
+    #             proPuzzleBoard, currentPath, solved = ACO.startACO(initialPuzzleBoard, proPuzzleBoard, globalNodeList, 0)
+    #     except RecursionError:
+    #         continue
 
-
-
-
-
-
-
-
-
-
+    print("Solved Status: ", solved)
+    print("ACO Done probably")
 
 
 
@@ -220,27 +221,32 @@ print("ACO Done probably")
 
 
 
-#~~~~~~~~~~~~~~Just outputs and stuff~~~~~~~~~~~~~~~~~
-print("\n \n \n")
-print("#####CELL#####")
-outputBoard(proPuzzleBoard, "cell")
-print("#####LIT#####")
-outputBoard(proPuzzleBoard, "lit")
-print("#####LIGHTABLE#####")
-outputBoard(proPuzzleBoard, "lightable")
-print("#####PRIORITY#####")
-outputBoard(proPuzzleBoard, "priority")
-print("#####INITIAL#####")
-outputBoard(initialPuzzleBoard, "cell")
-print("\n\n\n")
-
-writeBoardStateToCSV(proPuzzleBoard, "cell")
-writeBoardStateToCSV(proPuzzleBoard, "lit")
-writeBoardStateToCSV(proPuzzleBoard, "lightable")
-writeBoardStateToCSV(proPuzzleBoard, "priority")
 
 
 
 
+    #~~~~~~~~~~~~~~Just outputs and stuff~~~~~~~~~~~~~~~~~
+    print("\n \n \n")
+    print("#####CELL#####")
+    outputBoard(proPuzzleBoard, "cell")
+    print("#####LIT#####")
+    outputBoard(proPuzzleBoard, "lit")
+    print("#####LIGHTABLE#####")
+    outputBoard(proPuzzleBoard, "lightable")
+    print("#####PRIORITY#####")
+    outputBoard(proPuzzleBoard, "priority")
+    print("#####INITIAL#####")
+    outputBoard(initialPuzzleBoard, "cell")
+    print("\n\n\n")
+
+    writeBoardStateToCSV(proPuzzleBoard, "cell")
+    writeBoardStateToCSV(proPuzzleBoard, "lit")
+    writeBoardStateToCSV(proPuzzleBoard, "lightable")
+    writeBoardStateToCSV(proPuzzleBoard, "priority")
 
 
+
+
+
+if __name__ == "__main__":
+    main()

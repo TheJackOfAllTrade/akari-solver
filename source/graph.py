@@ -13,13 +13,20 @@ class Node:
         self.nodeDistance = nodeDistance #Follows same order as the connections to list their Distance (Should be all 1 if priotity is not implemented)
         self.nodePheromones = globalNodePheromones #Follows same order as the connections to list their Pheromones (Updated on pheromone update)
 
-    def updateGraph(self, puzzleBoard):
+    def updateGraph(self, puzzleBoard, currentPath):
+        #nodesAdded = 0
         if not self.nodeConnections:
             global currentID
             currentID = len(globalNodeList)
+            unused = checkNodeGraph(self, globalNodeList)
+            #from main import outputBoard
+            #print("----------------------------------------------------------")
+            #outputBoard(puzzleBoard, "priority")
+
             for y in range(len(puzzleBoard)):
                 for x in range(len(puzzleBoard[0])):
                     if puzzleBoard[y][x].priority > 0:
+                        #nodesAdded += 1
                         newNode = Node(currentID, x, y, [], [], [], [])
                         self.nodeConnections.append(currentID)
                         self.nodeWeights.append(0)
@@ -27,10 +34,12 @@ class Node:
                         self.nodePheromones.append(1)
                         globalNodePheromones.append(1)
                         globalNodeList.append(newNode)
-                        print("Adding Node: ", newNode.nodeID, " at (", x, ",", y, ")")
+                        #print("Adding Node: ", newNode.nodeID, " at (", x, ",", y, ")")
                         currentID += 1
                     else:
                         continue
+            #print("New Nodes Added: ", nodesAdded)
+            #print("----------------------------------------------------------")
             return globalNodeList
         else:
             return globalNodeList
@@ -53,8 +62,11 @@ def createGraph(puzzleBoard):
                 currentID += 1
             else:
                 continue
-    
+    print(len(globalNodeList))
     return globalNodeList
+
+def checkNodeGraph(currNode, NodeList):
+    return 0
 
     print("Woah there bucko, this ain't finished yet")
 
