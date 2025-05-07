@@ -1,10 +1,12 @@
-def function(number, number2):
-    number2 += 1
-    if number == 10:
-        return True, number2
-    else:
-        return False, number2
-    
-numCheck, numPlusOne = function(10, 15)
-print(numCheck)
-print(numPlusOne)
+array = [28.3270,
+	28.4688,
+	28.5898,
+	28.7473,
+	28.5562,
+	28.6122,
+	28.9316,
+	28.7190,
+	28.7870,
+	28.4066]
+
+print(sum(array)/10)

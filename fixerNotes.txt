@@ -1,0 +1,5 @@
+Potential Fix to looping issue
+
+in repeater, pass in all needed variables in default states
+change all functions that require these variable declared so that the variable is now passed into the functions
+Hopefully success

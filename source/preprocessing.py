@@ -11,7 +11,7 @@ def lookForZero(processedPuzzleBoard): #Searches the board for any cells contain
     for y in range(len(processedPuzzleBoard)):
         for x in range(len(processedPuzzleBoard[y])):
             if processedPuzzleBoard[y][x].cellType == "0":
-                print("Found 0 at (" + str(x) + "," + str(y) + ")")
+                #print("Found 0 at (" + str(x) + "," + str(y) + ")")
                 processedPuzzleBoard = setZero(processedPuzzleBoard, x, y)
             else:
                 next
@@ -21,7 +21,7 @@ def lookForFour(processedPuzzleBoard): #Searches the board for any cells contain
     for y in range(len(processedPuzzleBoard)):
         for x in range(len(processedPuzzleBoard[y])):
             if processedPuzzleBoard[y][x].cellType == "4":
-                print("Found 4 at (" + str(x) + "," + str(y) + ")")
+                #print("Found 4 at (" + str(x) + "," + str(y) + ")")
                 processedPuzzleBoard = setFour(processedPuzzleBoard, x, y)
             else:
                 next
@@ -34,7 +34,7 @@ def lookForRest(processedPuzzleBoard): #Searches the board for the rest of the c
         for y in range(len(processedPuzzleBoard)):
             for x in range(len(processedPuzzleBoard[y])):
                 if processedPuzzleBoard[y][x].cellType == "3" or processedPuzzleBoard[y][x].cellType == "2" or processedPuzzleBoard[y][x].cellType == "1":
-                    print("Found " + processedPuzzleBoard[y][x].cellType + " at (" + str(x) + "," + str(y) + ")")
+                    #print("Found " + processedPuzzleBoard[y][x].cellType + " at (" + str(x) + "," + str(y) + ")")
                     processedPuzzleBoard, changed = dealWithRest(processedPuzzleBoard, x, y, changed)
                 else:
                     next

@@ -1,6 +1,6 @@
 import numpy as np
 
-globalNodeList = []
+
 globalNodePheromones = []
 
 class Node:
@@ -13,7 +13,7 @@ class Node:
         self.nodeDistance = nodeDistance #Follows same order as the connections to list their Distance (Should be all 1 if priotity is not implemented)
         self.nodePheromones = globalNodePheromones #Follows same order as the connections to list their Pheromones (Updated on pheromone update)
 
-    def updateGraph(self, puzzleBoard, currentPath):
+    def updateGraph(self, puzzleBoard, currentPath, globalNodeList):
         #nodesAdded = 0
         if not self.nodeConnections:
             global currentID
@@ -44,7 +44,7 @@ class Node:
         else:
             return globalNodeList
 
-def createGraph(puzzleBoard):
+def createGraph(puzzleBoard, globalNodeList):
     startNode = Node(0, -1, -1, [], [], [], [])
     globalNodeList.append(startNode)
     global currentID
@@ -62,7 +62,7 @@ def createGraph(puzzleBoard):
                 currentID += 1
             else:
                 continue
-    print(len(globalNodeList))
+    #print(len(globalNodeList))
     return globalNodeList
 
 def checkNodeGraph(currNode, NodeList):

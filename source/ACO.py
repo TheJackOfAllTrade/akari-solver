@@ -2,7 +2,6 @@ import random
 import set_priority
 import graph
 
-currentPath = []
 recursionLimit = 5000
 currentRecursion = 0
 
@@ -20,10 +19,9 @@ def setProbability(nodeList, node):
     # for x in currentNode.nodeConnections: #Recursively calls the same function until every node is visited
     #     setProbability(nodeList, x)
 
-def startACO(initialBoard, puzzleBoard, nodeList, startNode):
+def startACO(initialBoard, puzzleBoard, nodeList, startNode, currentPath):
     global currentRecursion
     global recursionLimit
-    global currentPath
 
     if currentRecursion == recursionLimit:
         print("RECURSION LIMIT REACHED")
@@ -42,7 +40,7 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
 
         puzzleBoard = puzzleBoard[nodeChoice.yCoord][nodeChoice.xCoord].placeBulb(puzzleBoard, nodeChoice.xCoord, nodeChoice.yCoord)
         puzzleBoard = set_priority.setPriorities(puzzleBoard)
-        nodeChoice.updateGraph(puzzleBoard, currentPath)
+        nodeChoice.updateGraph(puzzleBoard, currentPath, nodeList)
         #currentNodeList = graph.createGraph(puzzleBoard)
         setProbability(nodeList, nodeChoice.nodeID)
 
@@ -79,7 +77,7 @@ def startACO(initialBoard, puzzleBoard, nodeList, startNode):
                 return puzzleBoard, currentPath, True
                 print("Uhhh, I think we're done?")
         else:
-            puzzleBoard, currentPath, solved = startACO(initialBoard, puzzleBoard, nodeList, nodeChoice.nodeID)
+            puzzleBoard, currentPath, solved = startACO(initialBoard, puzzleBoard, nodeList, nodeChoice.nodeID, currentPath)
             return puzzleBoard, currentPath, solved
 
 def checkSolution(puzzleBoard):
@@ -210,7 +208,13 @@ def updatePheromones(nodePath, nodeList, fitness):
 
     for i in range(len(nodePath) - 1):
         #print(nodePath[i])
-        
+        # print("Node Path i: ", nodePath[i])
+        # print("Node Path: ", nodePath)
+        # print("Node List Length: ", len(nodeList))
+        # tempList = []
+        # for each in nodeList:
+        #     tempList.append(each.nodeID)
+        # print("Node List: ", tempList)
         currentNode = nodeList[nodePath[i]]
         targetNode = nodePath[i + 1]
 
